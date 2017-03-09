@@ -1,13 +1,17 @@
 package com.pskindero.spring.rest_boot.domain;
 
-public class Book {
+import com.pskindero.spring.rest_boot.api.Identifable;
 
+public class Book implements Identifable{
+
+	private static long idGen = 1l;
+	private long id;
 	private String title;
 	private String author;
 	private int year;
 	
 	public Book(String title, String author, int year) {
-		super();
+		this();
 		this.title = title;
 		this.author = author;
 		this.year = year;
@@ -15,8 +19,14 @@ public class Book {
 	
 	public Book() {
 		super();
+		id = idGen;
+		idGen++;
 	}
 
+	public long getId() {
+		return id;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -44,7 +54,9 @@ public class Book {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Book [title=");
+		builder.append("Book [id=");
+		builder.append(id);
+		builder.append(", title=");
 		builder.append(title);
 		builder.append(", author=");
 		builder.append(author);
