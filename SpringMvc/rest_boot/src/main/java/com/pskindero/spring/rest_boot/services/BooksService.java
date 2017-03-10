@@ -2,8 +2,7 @@ package com.pskindero.spring.rest_boot.services;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pskindero.spring.rest_boot.dbs.StubDb;
@@ -12,7 +11,7 @@ import com.pskindero.spring.rest_boot.domain.Book;
 @Service
 public class BooksService {
 
-	@Resource(name = "testBooksDb")
+	@Autowired
 	private StubDb<Book> db;
 	
 	public BooksService() {
