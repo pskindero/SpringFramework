@@ -28,4 +28,12 @@ public class BooksService {
 	public boolean contains(long id) {
 		return db.contains(id);
 	}
+	
+	public Book add(Book b) {
+		return db.add(b);
+	}
+	
+	public Book delete(long id) {
+		return db.remove(id);
+	}
 }

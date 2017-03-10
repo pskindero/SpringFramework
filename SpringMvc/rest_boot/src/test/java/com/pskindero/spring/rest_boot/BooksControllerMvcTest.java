@@ -19,12 +19,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pskindero.spring.rest_boot.domain.Book;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class BooksControllerMvcTest {
 
+	private final MediaType[] SUPPORTED_MEDIA_TYPE = {MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON};
+	
 	private MockMvc mockMvc;
 
 	@Autowired
@@ -37,10 +42,32 @@ public class BooksControllerMvcTest {
 	}
 	
 	@Test
-	public void getAllBooks() throws Exception {
-		mockMvc.perform(get("/books"))
-			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-			.andDo(MockMvcResultHandlers.print());
+	public void getAllBooks_supportedFormats() throws Exception {
+		for (MediaType MT : SUPPORTED_MEDIA_TYPE) {
+			mockMvc.perform(get("/books").accept(MT))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MT + ";charset=UTF-8"))
+				.andDo(MockMvcResultHandlers.print());
+		}
 	}
+	
+	@Test
+	public void getBook_supportedFormats() throws Exception {
+		for (MediaType MT : SUPPORTED_MEDIA_TYPE) {
+			mockMvc.perform(get("/books/2").accept(MT))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MT + ";charset=UTF-8"))
+				.andDo(MockMvcResultHandlers.print());
+		}
+	}
+	
+	@Test
+	public void getBook_wrongId() throws Exception {
+		for (MediaType MT : SUPPORTED_MEDIA_TYPE) {
+			mockMvc.perform(get("/books/10").accept(MT))
+				.andExpect(status().isNoContent())
+				.andDo(MockMvcResultHandlers.print());
+		}
+	}
+	
 }

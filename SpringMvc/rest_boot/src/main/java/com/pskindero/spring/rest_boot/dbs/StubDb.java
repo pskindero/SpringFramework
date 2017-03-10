@@ -40,4 +40,8 @@ public class StubDb<T extends Identifable> {
 	public boolean contains(long id) {
 		return db.containsKey(id);
 	}
+	
+	public T remove(long id) {
+		return db.remove(id);
+	}
 }
